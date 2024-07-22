@@ -28,6 +28,8 @@
         <main>
 
             <?php include_once('includes/header.php');?>
+            <?php include_once('dbconn.php');?>
+
 
             <section class="hero" id="hero">
                 <div class="container">
@@ -114,20 +116,20 @@
                                         </div>
 
                                         <div class="col-lg-6 col-12">
-                                            <input type="email" name="email" id="email" pattern="[^ @]*@[^ @]*" class="form-control" placeholder="Email address" required='true'>
+                                            <input type="email" name="user_email" id="email" pattern="[^ @]*@[^ @]*" class="form-control" placeholder="Email address" required='true'>
                                         </div>
                                    
                                         <div class="col-lg-6 col-12">
-                                            <input type="telephone" name="phone" id="phone" class="form-control" placeholder="Enter Phone Number" maxlength="10">
+                                            <input type="telephone" name="phone" id="phone" class="form-control" placeholder="Enter Phone Number" maxlength="10" required>
                                         </div>
 
                                         <div class="col-lg-6 col-12">
-                                            <input type="date" name="date" id="date" value="" class="form-control">
+                                            <input type="date" name="appointment_date" id="date" value="" class="form-control" required>
                                             
                                         </div>
 
                                             <div class="col-lg-6 col-12">
-                                            <input type="time" name="time" id="time" value="" class="form-control">
+                                            <input type="time" name="appointment_time" id="time" value="" class="form-control" required>
                                             
                                         </div>
 
@@ -135,8 +137,17 @@
 
 
                                         <div class="col-lg-6 col-12">
-                                    <select name="doctorlist" id="doctorlist" class="form-control">
+                                    <select name="fk_doctor_id" id="doctorlist" class="form-control" required>
                                     <option value="">Select Doctor</option>
+                                    <?php 
+                                        $qry = "SELECT * from user where user_type ='Doctor'";
+                                        $exc=mysqli_query($con,$qry);
+                                        while($row=mysqli_fetch_array($exc)){
+                                            ?>
+                                            <option value="<?php echo $row['user_id'] ?>"><?php echo $row['user_name'] ?></option>
+                                            <?php
+                                        }
+                                    ?>
                                     </select>
                                     </div>
 
@@ -151,7 +162,44 @@
                                         </div>
                                     </div>
                                 </form>
+                                <?php
+                                    if(isset($_POST['submit'])){
+                                        $user_name = $_POST['name'];
+                                        $email = $_POST['user_email'];
+                                        $password = "Guest@123";
+                                        $phone = $_POST['phone'];
+                                        $fk_doctor_id = $_POST['fk_doctor_id'];
+                                        // $address = ""; #todo
+                                        $appointment_date = $_POST['appointment_date'];
+                                        $appointment_time = $_POST['appointment_time'];
+                                        $message = $_POST['message'];
+                                        $user_type = "Patient";
+                                        
+                                        $final_time = $appointment_date. " ".$appointment_time.":00";
+                                        
+                                        $timestamp = strtotime($final_time);
+                                        // Format the timestamp as a date
+                                        $final_time = date("Y-m-d H:i:s", $timestamp);
+                                        $qry = "INSERT INTO `user`(`user_email`, `user_password`, `user_type`, `user_name`, `phone`) VALUES ('$email','$password','$user_type','$user_name','$phone') ";
 
+                                        $exc = mysqli_query($con,$qry);
+                                        $last_insertd_id = mysqli_insert_id($con);
+
+                                        // add data in appointmnet table
+                                        $qry2 = "INSERT INTO `appoitments`(`fk_patient_id`, `fk_doctor_id`, `appoitment_time`, `message`) VALUES ('$last_insertd_id','$fk_doctor_id','$final_time','$message') ";
+                                        $exc2 = mysqli_query($con,$qry2);
+
+                                        if($exc2){
+                                            echo "<script>alert('Appointment Scheduled.')</script>";
+                                        }
+                                        else{
+                                            echo "<script>alert('Error...')</script>";
+
+                                        }
+
+                                    }
+                                
+                                ?>
                             </div>
                         </div>
 

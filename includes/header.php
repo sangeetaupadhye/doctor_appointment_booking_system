@@ -1,3 +1,5 @@
+
+<?php './dbconn.php' ?>
 <nav class="navbar navbar-expand-lg bg-light fixed-top shadow-lg">
                 <div class="container">
                     <a class="navbar-brand mx-auto d-lg-none" href="index.php">
