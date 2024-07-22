@@ -1,3 +1,17 @@
+<?php
+
+    $qry="select * from  clinic";
+    $exc=mysqli_query($con,$qry);
+    while($row=mysqli_fetch_array($exc)){
+        $clinic_email=$row['clinic_email'];
+        $clinic_address=$row['clinic_address'];
+        $clinic_name=$row['clinic_name'];
+        $clinic_time=$row['clinic_time'];
+        $clinic_phone=$row['clinic_phone'];
+
+
+    }
+?>
 <footer class="site-footer section-padding" id="contact">
             <div class="container">
                 <div class="row">
@@ -9,16 +23,16 @@
                         <ul class="list-group list-group-flush">
                             <li class="list-group-item d-flex">
 
-                                <?php  echo "7-8";?>
+                                <?php  echo $clinic_time;?>
                             </li></ul>
                             <h5 class="mb-lg-4 mb-3">Email</h5>
                             <ul class="list-group list-group-flush">
                             <li class="list-group-item d-flex">
-                                <?php  echo "abc@gmail.com";?></li>
+                                <?php  echo $clinic_email;?></li>
                                 <br>
                                  <h5 class="mb-lg-4 mb-3">Contact Number</h5>
                             <li class="list-group-item d-flex">
-                                <?php  echo "9742526326";?></li>
+                                <?php  echo $clinic_phone;?></li>
                         </ul>
                     </div>
 
@@ -27,7 +41,7 @@
 
                      
 
-                        <p><?php  echo "address";?></p>
+                        <p><?php  echo $clinic_address;?></p>
                     </div>
 
                     <div class="col-lg-3 col-md-6 col-12 ms-auto">

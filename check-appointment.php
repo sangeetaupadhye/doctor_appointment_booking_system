@@ -1,4 +1,4 @@
-
+<?php include './dbconn.php' ?>
 <!doctype html>
 <html lang="en">
     <head>
@@ -47,71 +47,96 @@
                                 <form role="form" method="post">
                                     <div class="row">
                                         <div class="col-lg-6 col-12">
-                                            <input id="searchdata" type="text" name="searchdata" required="true" class="form-control" placeholder="Appointment No./Name/Mobile No.">
+                                            <input id="searchdata" type="email" name="email" required="true" class="form-control" placeholder="email@gmail.com">
                                         </div>
 
-                                        <div class="col-lg-3 col-md-4 col-6 mx-auto">
+                                        <div class="col-lg-3 col-md-4 col-6 ">
                                             <button type="submit" class="form-control" name="search" id="submit-button">Check</button>
                                         </div>
                                     </div>
                                 </form>
 
                             </div>
-                 
-  <h4 align="center">Result against "<?php echo "date";?>" keyword </h4>
+
+    <?php
+        if(isset($_POST['search'])){
+            $email=$_POST['email'];
+            // $email="om@gmail.com";
+
+            ?>
+
+       
+  <h4 align="center">Result against "<?php echo $email;?>" </h4>
                     
                     <div class="widget-body">
                         <div class="table-responsive">
                             <table class="table table-bordered table-hover js-basic-example dataTable table-custom">
-                                <thead>
+                                <thead class="bg-dark text-light text-center">
                                     <tr>
                                         <th>S.No</th>
                                         <th>Appointment Number</th>
                                         <th>Patient Name</th>
                                         <th>Mobile Number</th>
                                         <th>Email</th>
-                                    <th>Status</th>
-                                        <th>Remark</th>
-                                        
+                                        <th>Status</th>
+                                  
                                     </tr>
                                 </thead>
                             
                                 <tbody>
-      
+                                <?php 
+
+                                    $qry = "SELECT * from user u,appoitments ap
+                                            where u.user_email='$email'
+                                            and ap.fk_patient_id = u.user_id ";
+                                    $exc=mysqli_query($con,$qry);
+                                    $count = mysqli_num_rows($exc); 
+                                    while($row=mysqli_fetch_array($exc)){
+                                        $i=1;
+                                        ?>
+
+                                     
                                     <tr>
-                                        <td><?php echo "count";?></td>
-                                        <td><?php  echo "app_number";?></td>
-                                        <td><?php  echo "name";?></td>
-                                        <td><?php  echo "mobilenumber";?></td>
-                                        <td><?php  echo "email";?></td>
+                                        <td><?php echo $i;?></td>
+                                        <td><?php  echo "PATIENT-".$row['appoitment_id'];?></td>
+                                        <td><?php  echo $row['user_name'];?></td>
+                                        <td><?php  echo $row['phone'];?></td>
+                                        <td><?php  echo $row['user_email'];?></td>
                                       
 
-                     <td><?php echo "Not Updated Yet"; ?></td>
-                 <td><?php  echo "status";?>
-                  </td>
-                  
+                                        <td><?php echo $row['appoitment_status']; ?></td>
+                                        <td><?php  echo "status";?> </td>
+                                        
 
-                     <td><?php echo "Not Updated Yet"; ?></td>
-                <td><?php  echo "Rematrk";?>
-                  </td>
-               
+                                            
                                         
                                     </tr>
-                                
+                                    <?php
+                                    $i=$i+1;
+                                    }
+
+
+                                    if($count==0){
+                                        ?>
+                                        <td colspan='6' class="text-center h3">No data found</td>
+                                        <?php
+                                    }
+                                ?>
     
                                 </tbody>
              
-           
+                                
 
-  <tr>
-    <td colspan="8"> No record found against this search</td>
-
-  </tr>
+                                
 
                             </table>
                         </div>
 
                     </div>
+
+                    <?php
+                        }
+                    ?>
                 </div>
             </section>
              
