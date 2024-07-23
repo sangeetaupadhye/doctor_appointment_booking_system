@@ -1,81 +1,72 @@
+<?php include_once('./header.php'); ?>
 
+<?php include_once('./sidebar.php'); ?>
 
+<div class="content-wrapper">
+  <div class="content-header">
+    <div class="container-fluid">
+      <div class="row mb-2">
+        <div class="col-12">
 
-<?php include_once('./header.php');?>
-
- 
-<?php include_once('./sidebar.php');?>
-  <!-- Content Wrapper. Contains page content -->
-  <div class="content-wrapper">
-    <!-- Content Header (Page header) -->
-    <div class="content-header">
-      <div class="container-fluid">
-        <div class="row mb-2">
-        
-        
-        </div><!-- /.row -->
-        <section class="content">
-      <div class="container-fluid">
-        <div class="row">
-          <!-- left column -->
-          <div class="col-md-8 offset-2">
-            <!-- general form elements -->
-            <div class="card card-primary">
-              <div class="card-header">
-                <h3 class="card-title">Add Doctor</h3>
-              </div>
-              <!-- /.card-header -->
-              <!-- form start -->
-              <form role="form" method="post" enctype="multipart/form-data">
-                <div class="card-body">
-                  
-                  <div class="form-group">
-                    <label for="exampleInputEmail1">Name</label>
-                    <input type="text" class="form-control" id="name" name="cat_name" placeholder="Name" required="true">
-                  </div>
-                   <div class="card-footer">
-                    <button type="submit" class="btn btn-primary" name="add">Add</button>
-                  </div>
-              </form>
-              <?php
-                  if(isset($_POST['add'])){
-                      $cat_name=$_POST['cat_name'];
-                      $qry="INSERT INTO `category`( `cat_name`) VALUES ('$cat_name')";
-                      if(mysqli_query($con,$qry)){
-                        echo "<script>alert('Data Added')
-                            window.location='view_category.php'
-                            </script>";
-                            }
-                            else{
-                           echo "<script>alert('Error')</script>";
-                           }
-                         }
-              ?>
+          <div class="card">
+            <div class="card-header bg-info">
+              <h3 class="card-title h2">Add Doctor</h3>
+              <a href="./viewDoctor.php" class="btn btn-dark float-right">View Doctor</a>
             </div>
-            <!-- /.card -->
+            <div class="card-body">
+            <form role="form" method="post" enctype="multipart/form-data">
+                    <div class="card-body">
+                     
+                      <div class="form-group">
+                        <label for="user_name">Name</label>
+                        <input type="text" class="form-control" id="user_name" name="user_name" placeholder="Name" required>
+                      </div>
+                      <div class="form-group">
+                        <label for="user_email">Email</label>
+                        <input type="email" class="form-control" name="user_email" id="user_email" placeholder="xyz@gmail.com" required>
+                      </div>
+                      <div class="form-group">
+                        <button type="submit" class="btn btn-info" name="add">Add</button>
 
+                      </div>
+                    
+                  
+                      </div>
+                
+                  </form>
+            </div>
+            </div>
           </div>
-          <!--/.col (left) -->
-          <!-- right column -->
-         
-        </div>
-        <!-- /.row -->
-      </div><!-- /.container-fluid -->
-    </section>
-
-
-      </div><!-- /.container-fluid -->
-     
-    </div>
-      </div><!-- /.container-fluid -->
-    </section>
+          <?php
+                  if (isset($_POST['add'])) {
+               
+                    $user_name = $_POST['user_name'];
+                    $user_email = $_POST['user_email'];
+                 
     
-    <!-- /.content -->
-  </div>
-  <!-- /.content-wrapper -->
+                    $user_type = "Doctor";
+                    $user_password = "12345"; // You should handle password securely
+                 
 
+                    // Assuming $con is your database connection
+                    $qry = "INSERT INTO user ( user_name, user_email, user_password, user_type) 
+                    VALUES ( '$user_name',  '$user_email', '$user_password', '$user_type')";
 
-
-  <?php include_once('./footer.php');?>
-
- 
+                    if (mysqli_query($con, $qry)) {
+                      $msg="Thank you for registering, ";
+                      $msg.="login to VISION CARE <br/> ";
+                      $msg.="Username : $user_email ";
+                      $msg.="<br />Password : $user_password";
+                      phpmailsend($user_email, 'Doctor registration', $msg);
+                      echo "<script>
+                        alert('Doctor Added');
+                        window.location='./viewDoctor.php';
+                      </script>";
+                    } else {
+                      echo "<script>alert('Error')</script>";
+                    }
+                  }
+                  ?>
+      </div></div>
+  </div></div>
+<?php include_once('./footer.php'); ?>

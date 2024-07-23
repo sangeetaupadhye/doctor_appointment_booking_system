@@ -1,106 +1,66 @@
+<?php include("./header.php"); ?>
+<?php include("./sidebar.php"); ?>
 
-
-
-<?php include_once('./header.php');?>
-
- 
-<?php include_once('./sidebar.php');?>
-  <!-- Content Wrapper. Contains page content -->
-  <div class="content-wrapper">
-    <!-- Content Header (Page header) -->
+<div class="content-wrapper">
     <div class="content-header">
-      <div class="container-fluid">
-        <div class="row mb-2">
-        <div class="col-12">
-        
-        <div class="card">
-          <div class="card-header bg-primary">
-            <h3 class="card-title ">Pending Appointments</h3>
-          </div>
-          <!-- /.card-header -->
-          <div class="card-body">
-            <table id="example1" class="table table-bordered table-striped">
-              <thead>
-              <tr>
-                <th>S.No</th>
-                <th>Name</th>
-                <th>Phone</th>
-                <th>Email</th>
-                <th>Status</th>
-                <th>Action</th>
-              </tr>
-              </thead>
-               <tbody>
-                    <?php
-                        $qry="select * from user where user_type='user' and status='Pending'";
-                        $exc=mysqli_query($con,$qry);
-                        $i=1;
-                        while($row=mysqli_fetch_array($exc)){
-                            ?>
-                            <tr>
-                                <td><?php echo $i ?></td>
-                                <td><?php echo $row['name'] ?></td>
-                                <td><?php echo $row['phone'] ?></td>
-                                <td><?php echo $row['email'] ?></td>
-                                <td><?php echo $row['status'] ?></td>
-                                <td>
-                                    <a href="./pending_request.php?user_id=<?php echo $row['id'] ?>&status=Approved" class="btn btn-primary">Accept</a>
-                                    <a href="./pending_request.php?user_id=<?php echo $row['id'] ?>&status=Rejected" class="btn btn-danger">Reject</a>
-
-                                </td>
-
-                            </tr>
-                            <?php
-                        }
-                    ?>
-               </tbody>
-            
-             
-            </table>
-                      <?php 
-                      if(isset($_GET['user_id'])){
-                          $user_id=$_GET['user_id'];
-                          $status=$_GET['status'];
-
-                          if($status=='Approved'){
-                              $qry="update user set status='$status' where id='$user_id'";
-                              $exc=mysqli_query($con,$qry);
-                              if($exc){
-                                echo "<script>alert('Approved')
-                                  location='./allJobRequest.php'
-                                </script>";
-                              }
-                          }
-                          else if($status == 'Rejected'){
-                            $qry="update user set status='$status' where id='$user_id'";
-                              $exc=mysqli_query($con,$qry);
-                              if($exc){
-                                echo "<script>alert('Rejected')
-                                  location='./allJobRequest.php'
-                                </script>";
-                              }
-                          }
-
-                        }
-                      ?>
-          </div>
-          <!-- /.card-body -->
+        <div class="container-fluid">
+            <div class="row mb-2">
+                <div class="col-sm-6">
+                    <h1 class="m-0 text-dark">Pending Appointments</h1>
+                </div>
+            </div>
         </div>
-        <!-- /.card -->
-      </div>
-      
-
-      </div><!-- /.container-fluid -->
-     
     </div>
-      </div><!-- /.container-fluid -->
+    <section class="content">
+        <div class="container-fluid">
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="card">
+                        <div class="card-header">
+                            <h3 class="card-title">Pending Appointments List</h3>
+                        </div>
+                        <div class="card-body">
+                            <table id="example1" class="table table-bordered table-striped">
+                                <thead>
+                                <tr>
+                                        <th class="text-center">Appointment ID</th>
+                                        <th class="text-center">Patient Name</th>
+                                        <th class="text-center">Patient Email</th>
+                                        <th class="text-center">Patient Phone</th>
+                                        <th class="text-center">Appointment Time</th>
+                                        <th class="text-center">Status</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                <?php
+                                    $qry = "SELECT a.appoitment_id, u.user_name, u.user_email, u.phone, a.appoitment_time, a.appoitment_status
+                                    FROM appoitments a
+                                    INNER JOIN user u ON a.fk_patient_id = u.user_id
+                                    WHERE a.appoitment_status = 'Scheduled'";
+                                    $exc = mysqli_query($con, $qry);
+
+                                    while ($row = mysqli_fetch_array($exc)) {
+                                    ?>
+                                        <tr>
+                                            <td class="text-center"><?php echo $row['appoitment_id']; ?></td>
+                                            <td class="text-center"><?php echo $row['user_name']; ?></td>
+                                            <td class="text-center"><?php echo $row['user_email']; ?></td>
+                                            <td class="text-center"><?php echo $row['phone']; ?></td>
+                                            <td class="text-center"><?php echo $row['appoitment_time']; ?></td>
+                                            <td class="text-center"><?php echo $row['appoitment_status']; ?></td>
+                                    
+                                        </tr>
+                                    <?php
+                                    }
+                                    ?>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
     </section>
-    <!-- /.content -->
-  </div>
-  <!-- /.content-wrapper -->
+</div>
 
-
-
-  <?php include_once('./footer.php');?>
-
- 
+<?php include("./footer.php"); ?>

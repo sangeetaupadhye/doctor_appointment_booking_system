@@ -141,6 +141,15 @@
             </a>
         
           </li>
+          <li class="nav-item">
+            <a href="viewDoctor.php" class="nav-link">
+              <i class="nav-icon fas fa-users"></i>
+              <p>
+                Doctors
+               </p>
+            </a>
+        
+          </li>
         
           <!-- <li class="nav-item has-treeview">
             <a href="#" class="nav-link">

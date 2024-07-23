@@ -59,8 +59,8 @@
                     $email=$_POST['email'];
                     $password=$_POST['password'];
                     $qry="select * from user 
-                    where email='$email'
-                    and password= '$password'
+                    where user_email='$email'
+                    and user_password= '$password'
                     and user_type='Admin' ";
                     $exc=mysqli_query($con,$qry);
                     $count=mysqli_affected_rows($con);

@@ -1,20 +1,23 @@
 <?php 
+
         include "../dbconn.php";
-        // session_start();
-        // if(!isset($_SESSION['email'])){
-        //     header("location:./index.php");
+        include "../email.php"; 
 
-        // }
-        // else{
-        //     $email=$_SESSION['email'];
-        //     $qry="select * from user where email='$email'";
-        //     $exc=mysqli_query($con,$qry);
-        //     while($row=mysqli_fetch_array($exc)){
-        //         $admin_id=$row['id'];
-        //         $admin_email=$row['email'];
+        session_start();
+        if(!isset($_SESSION['email'])){
+            header("location:./index.php");
 
-        //     }
-        // }
+        }
+        else{
+            $email=$_SESSION['email'];
+            $qry="select * from user where user_email='$email'";
+            $exc=mysqli_query($con,$qry);
+            while($row=mysqli_fetch_array($exc)){
+                $admin_id=$row['user_id'];
+                $admin_email=$row['user_email'];
+
+            }
+        }
     ?>
 <!DOCTYPE html>
 <html>
